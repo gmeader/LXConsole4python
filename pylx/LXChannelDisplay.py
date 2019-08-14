@@ -20,12 +20,12 @@ except:
 class LXChannelLevelWidget:
 
 	def __init__(self, frame, channel, level=0):
-		self.sframe = Frame(frame, height=45, width=30)
+		self.sframe = Frame(frame, height=45, width=30, bg="black",padx=5,pady=5)
 		self.sframe.pack_propagate(0)
 		
-		self.clabel = Label(self.sframe, text=channel)
+		self.clabel = Label(self.sframe, text=channel, fg="white", bg="black")
 		self.clabel.pack()
-		self.llabel = Label(self.sframe, text=level)
+		self.llabel = Label(self.sframe, text=level, fg="cyan", bg="black")
 		self.llabel.pack()
 		
 	def set_level(self, level):

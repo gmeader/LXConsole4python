@@ -92,9 +92,9 @@ class LXPatch:
 			self.patch[i].list = []	
 			
 	def patchAddressToChannel(self, address, channel, level=1.0, option=0):
-		if address > 0 and address <= self.addresses:
+		if 0 < address <= self.addresses:
 			self.unpatchAddress(address-1)
-			if channel > 0 and channel <= len(self.patch):
+			if 0 < channel <= len(self.patch):
 				self.patch[channel-1].patchAddress(address-1, level, option)
 		
 	def highestAddress(self):
@@ -126,7 +126,7 @@ class LXPatch:
 		for k in range(self.addresses):
 			if tc == 0:
 				s = s + "Patch 1 " + str(ca[k]) +"<"+ str(k+1) +"@" + str(la[k])
-				tc = 1;
+				tc = 1
 			else:
 				s = s + " " + str(ca[k]) +"<"+ str(k+1) +"@" + str(la[k])
 				tc += 1

@@ -66,7 +66,7 @@ class OSCListener:
 
         while self.listening:
             inputready,outputready,exceptready = select(input,[],[],0)
-            if ( len(inputready) == 1 ):
+            if len(inputready) == 1:
                 self.data,addr = self.udpsocket.recvfrom(256)
                 self.msglen = len(self.data)
                 self.packetReceived()
@@ -85,10 +85,10 @@ class OSCListener:
     
     def packetReceived(self):
         dataindex = 0
-        while ( (dataindex >= 0 ) and ( dataindex < self.msglen ) ):
-            dataindex = self.processMessageAt(dataindex);
+        while (dataindex >= 0) and (dataindex < self.msglen):
+            dataindex = self.processMessageAt(dataindex)
 
-#########################################
+    #########################################
 #
 #   process message extracts the addressPattern
 #   and argument list from the OSC message
@@ -100,8 +100,8 @@ class OSCListener:
 #########################################
 
     def processMessageAt(self, si):
-        oi = 0;
-        dl = 0;
+        oi = 0
+        dl = 0
         zl = self.nextZero(si)
         
         #insure that string will terminate with room for 4 bytes of type definition
@@ -146,14 +146,14 @@ class OSCListener:
                         tl += 1
                     
                     # when done with the argument extraction loop, notify the delegate
-                    if self.delegate != None:
+                    if self.delegate is not None:
                         self.delegate.receivedOSC(addressPattern, args)
                     #else:
                         #print addressPattern
                         #print self.args
                 else: #no arguments but an address pattern, notify delegate
                     oi = -1
-                    if self.delegate != None:
+                    if self.delegate is not None:
                         self.delegate.receivedOSC(addressPattern, [])
         else:
             oi = -1
@@ -188,10 +188,10 @@ class OSCListener:
 #########################################
         
     def nextIndexForString(self, s, start):
-        ml = math.trunc(len(s) / 4) + 1;
-        return start + (ml*4);
-        
-#########################################
+        ml = math.trunc(len(s) / 4) + 1
+        return start + (ml*4)
+
+    #########################################
 #
 #   nextIndexForIndex determines a 4 byte padded index
 #   starting from i
@@ -199,10 +199,10 @@ class OSCListener:
 #########################################
         
     def nextIndexForIndex(self, i):
-        ml = math.trunc(i / 4) + 1;
-        return ml*4;
+        ml = math.trunc(i / 4) + 1
+        return ml*4
 
-#########################################
+    #########################################
 #
 #   extracts a null terminated string starting at index si
 #

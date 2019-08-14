@@ -73,9 +73,9 @@ class USITTAsciiParser:
 		if valid:
 			self.doFinalCleanup()
 	
-		return valid;
+		return valid
 
-##### processCharacter takes a character and determines if it ends the current line.
+	##### processCharacter takes a character and determines if it ends the current line.
 #     If so, the entire line is processed.
 #     Otherwise, the character is added to the current string unless
 #     it is a delimiter, in which case, the current string is added to the tokens list
@@ -92,7 +92,7 @@ class USITTAsciiParser:
 			else:
 				return False
 		elif not self.cstring == "!":
-			if c == '\t' or ( ord(c) > 31 and ord(c) <127 ):
+			if c == '\t' or (31 < ord(c) < 127):
 				if self.isDelimiter(c):
 					if not ( self.cstring == "!" or len(self.cstring) == 0 ):
 						self.addTokenWithCurrentString()
@@ -229,11 +229,11 @@ class USITTAsciiParser:
 	def tokenStringForText(self, delimiter=" "):
 		tc = len(self.tokens)
 		if tc > 1:
-			ti = 1;
-			rs = self.tokens[ti];
+			ti = 1
+			rs = self.tokens[ti]
 			ti += 1
 			while ti < tc:
-				rs = rs + delimiter + self.tokens[ti];
+				rs = rs + delimiter + self.tokens[ti]
 				ti += 1
 			return rs
 		return None
@@ -282,7 +282,7 @@ class USITTAsciiParser:
 	def keywordPatch(self):
 		tc = len(self.tokens)
 		if tc > 4:
-			rs = 5;
+			rs = 5
 			valid = True
 			while valid and tc >= rs:
 				valid = self.doPatch(self.tokens[1], self.tokens[rs-3], self.tokens[rs-2], self.tokens[rs-1])
@@ -351,27 +351,27 @@ class USITTAsciiParser:
 		return True
 
 	def keywordMfgBasic(self, keyword):
-		return True;
-		
+		return True
+
 	def keywordMfgPrimary(self, keyword):
 		self.state = USITTAsciiParser.MFG_COLLECT
 		if self.recognizedMfgPrimary(keyword):
 			return self.doMfgPrimary(keyword)
-		return True;
-		
+		return True
+
 	def keywordMfgSecondary(self, keyword):
 		if self.recognizedMfgSecondary(keyword):
 			return self.doMfgSecondary(keyword)
-		return True;
-		
-##### secondary keywords are similar to primary keywords
+		return True
+
+	##### secondary keywords are similar to primary keywords
 #     when cue, group or sub primary keywords are encountered
 #     the state is set so that secondary keywords modify
 #     the current cue, group or sub
 #####
 		
 	def keywordCueSecondary(self, keyword):
-		if self.cue != None and self.cue != "" and len(self.tokens) > 1:
+		if self.cue is not None and self.cue != "" and len(self.tokens) > 1:
 			
 			if keyword.startswith("$$"):
 				return self.keywordMfgForCue(keyword)
@@ -402,7 +402,7 @@ class USITTAsciiParser:
 		return True
 		
 	def keywordGroupSecondary(self, keyword):
-		if self.group != None and self.group != "" and len(self.tokens) > 1:
+		if self.group is not None and self.group != "" and len(self.tokens) > 1:
 			
 			if keyword.startswith("$$"):
 				return self.keywordMfgForGroup(keyword)
@@ -419,7 +419,7 @@ class USITTAsciiParser:
 		return True
 		
 	def keywordSubSecondary(self, keyword):
-		if self.sub != None and self.sub != "" and len(self.tokens) > 1:
+		if self.sub is not None and self.sub != "" and len(self.tokens) > 1:
 			
 			if keyword.startswith("$$"):
 				return self.keywordMfgForGroup(keyword)

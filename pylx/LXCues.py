@@ -59,7 +59,7 @@ class LXCues:
         
     def createCueForNumber(self, number):
         q = self.cueForNumber(number)
-        if q == None:
+        if q is None:
             q = LXCue(self.channels)
             q.number = float(number)
             self.cues.append(q)
@@ -105,7 +105,7 @@ class LXCues:
     def recordCue(self, cue, number=0, overwrite=0):
         newcue = None
         if number == 0:
-            if self.current != None:
+            if self.current is not None:
                 # current cue exists
                 if overwrite == 1:
                     # replace
@@ -121,7 +121,7 @@ class LXCues:
                 newcue.number = self.nextCueNumber()
         else:
             excue = self.cueForNumber(number)
-            if excue == None:
+            if excue is None:
                 newcue = LXCue(self.channels, cue)
                 newcue.number = number
             elif overwrite == 1:
@@ -133,7 +133,7 @@ class LXCues:
                 newcue.number = self.nextCueNumber()
             else:
                 return False
-        if newcue != None:
+        if newcue is not None:
             self.cues.append(newcue)
             self.cues.sort(key=attrgetter('number'))
             self.current = newcue
@@ -185,8 +185,8 @@ class LXCues:
     def oscString(self):
         s =""
         for cue in self.cues:
-            os = cue.oscString();
-            if os != None:
+            os = cue.oscString()
+            if os is not None:
                 s += os
                 s+= "\n"
         return s
@@ -197,7 +197,7 @@ class LXCues:
 #####
         
     def nextCueAfterCue(self, cue):
-        if cue != None:
+        if cue is not None:
             if cue in self.cues:
                 i = self.cues.index(cue) + 1
                 if i < len(self.cues):
@@ -213,17 +213,17 @@ class LXCues:
 #####
         
     def startFadingToCue(self, cue=None):
-        if cue == None:
+        if cue is None:
             cue = self.next
-        if cue == None:
+        if cue is None:
             cue = self.nextCueAfterCue(self.current)
-            if cue == None:
+            if cue is None:
                 if len(self.cues) > 0:
                     cue = self.cues[0]
-        if cue != None:
+        if cue is not None:
             self.livecue.startFadeToCue(cue, self)
-            if cue.oscstring != None:
-                self.oscinterface.sendOSCFromString(cue.oscstring);
+            if cue.oscstring is not None:
+                self.oscinterface.sendOSCFromString(cue.oscstring)
             self.current = cue
             self.next = self.nextCueAfterCue(self.current)
 
@@ -239,7 +239,7 @@ class LXCues:
             self.startFadingToCue()
         else:
             cue = self.cueForNumber(number)
-            if cue != None:
+            if cue is not None:
                 self.startFadingToCue(cue)
                 
 #####
@@ -248,7 +248,7 @@ class LXCues:
 #####               
                 
     def fadeStarted(self):
-        if self.delegate != None:
+        if self.delegate is not None:
             self.delegate.fadeStarted()
                 
 #####
@@ -257,7 +257,7 @@ class LXCues:
 #####
                 
     def fadeProgress(self):
-        if self.delegate != None:
+        if self.delegate is not None:
             self.delegate.fadeProgress()
 
 #####
@@ -266,13 +266,13 @@ class LXCues:
 #####
                 
     def fadeComplete(self):
-        if self.livecue.stopped == True:
+        if self.livecue.stopped:
                 self.next = self.current
         if self.livecue.followtime >= 0:
             self.startFadingToCue()
         else:
             self.livecue.delegate = None
-            if self.delegate != None:
+            if self.delegate is not None:
                 self.delegate.fadeComplete()
 
 #####
@@ -350,11 +350,11 @@ class LXCues:
             if parts[1] == "cue":
                 if parts[3] == "start":
                     q = self.cueForNumber(parts[2])
-                    if q != None:
+                    if q is not None:
                         self.startFadingToCue(q)
         elif len(parts) == 3:
             if parts[1] == "cmd.lxconsole":
-                if (self.delegate != None) and (args[0] > 0 ):
+                if (self.delegate is not None) and (args[0] > 0):
                     if parts[2] == "GO":
                         self.delegate.go_cmd()
                         return
@@ -365,9 +365,9 @@ class LXCues:
                         self.delegate.back_cmd()
                         return
                     self.delegate.external_cmd(parts[2], args[0])
-                    return;
+                    return
             if parts[1] == "key.lxconsole":
-                if (self.delegate != None) and (args[0] > 0 ):
+                if (self.delegate is not None) and (args[0] > 0):
                     self.delegate.external_key(parts[2])
                     
         
@@ -389,9 +389,9 @@ class LXCue:
         self.waituptime = 0             # wait time for increasing levels
         self.waitdowntime = 0           # wait time for decreasing levels
         self.followtime = -1            # time for followon (-1 is no follow)
-        self.oscstring = None;
-        
-        if  cue == None:
+        self.oscstring = None
+
+        if cue is None:
             self.livestate = []         # list of floating point levels
             for i in range(channels):
                 self.livestate.append(0.0)
@@ -439,8 +439,8 @@ class LXCue:
             
     def upTimeString(self):
         if self.waituptime > 0:
-            return "Up: " + str(self.uptime) + " wait: " + str(self.waituptime)
-        return "Up: " + str(self.uptime)
+            return "Up time: " + str(self.uptime) + " wait: " + str(self.waituptime)
+        return "Up time: " + str(self.uptime)
 
 #####
 #     downTimeString returns down time text
@@ -448,8 +448,8 @@ class LXCue:
             
     def downTimeString(self):
         if self.waitdowntime > 0:
-            return "Down: " + str(self.downtime) + " wait: " + str(self.waitdowntime)
-        return "Down: " + str(self.downtime)        
+            return "Down time: " + str(self.downtime) + " wait: " + str(self.waitdowntime)
+        return "Down time: " + str(self.downtime)
 
 #####
 #     followTimeString returns follow time text
@@ -457,7 +457,7 @@ class LXCue:
             
     def followTimeString(self):
         if self.followtime > 0:
-            return "Follow: " + str(self.followtime)
+            return "Follow time: " + str(self.followtime)
         return ""
         
 #####
@@ -488,7 +488,7 @@ class LXCue:
     def asciiString(self):
         s = self.descriptionString("\n") + "\n"
         s = s + self.levelsString()
-        if self.oscstring != None:
+        if self.oscstring is not None:
             s = s + "$$OSCstring " + self.oscstring + "\n"
         return s
         
@@ -504,7 +504,7 @@ class LXCue:
             if self.livestate[i] > 0:
                 if tc == 0:
                     s = s + "Chan " + str(i+1) +"@"+str(int(self.livestate[i]))
-                    tc = 1;
+                    tc = 1
                 else:
                     s = s + " " + str(i+1) +"@"+str(int(self.livestate[i]))
                     tc += 1
@@ -520,7 +520,7 @@ class LXCue:
 #####
             
     def oscString(self):
-        if self.oscstring != None:
+        if self.oscstring is not None:
             return "Cue " + str(self.number) + " " + self.oscstring
         return None 
 
@@ -612,8 +612,8 @@ class LXLiveCue (LXCue):
 #####
             
     def fade(self):
-        starttime = time.time();
-        etime = 0;
+        starttime = time.time()
+        etime = 0
         while self.fading:
             etime = time.time()-starttime
             if etime - self.waituptime > 0:
@@ -641,7 +641,7 @@ class LXLiveCue (LXCue):
                 else:
                     self.livestate[i] = (self.initialstate[i] + downprogress * self.deltastate[i])
             self.writeToInterface()
-            if self.delegate != None:
+            if self.delegate is not None:
                 self.delegate.fadeProgress()
             
             self.fading = ((etime - self.waituptime) < self.uptime) or ((etime - self.waitdowntime) < self.downtime)
@@ -651,7 +651,7 @@ class LXLiveCue (LXCue):
                 time.sleep(0.025)   #max 40 times per sec for DMX
                 
         self.fade_thread = None
-        if self.delegate != None:
+        if self.delegate is not None:
             self.delegate.fadeComplete()        # may start another fade if followtime
 
 #####       
@@ -660,12 +660,12 @@ class LXLiveCue (LXCue):
 #####
         
     def startFading(self):
-        self.fading = True;
+        self.fading = True
         if self.fade_thread is None:
             self.fade_thread = threading.Thread(target=self.fade)
             self.fade_thread.daemon = True
             self.fade_thread.start()
-        if self.delegate != None:
+        if self.delegate is not None:
             self.delegate.fadeStarted()
 
 #####   
@@ -674,7 +674,7 @@ class LXLiveCue (LXCue):
 #####
     
     def stopFading(self):
-        while self.fade_thread != None:
+        while self.fade_thread is not None:
             self.fading = False
             
 ######      

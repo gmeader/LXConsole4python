@@ -45,6 +45,7 @@ class App:
         self.boss = master
         master.title('LXConsole')
         master.bind('<Return>', self.read_cmd)
+        master.configure(background='grey30')
 
         # read application options
         self.props = CTProperties()
@@ -75,56 +76,56 @@ class App:
         self.echo_osc_port = int(self.props.stringForKey("echo_osc_port", "9000"))
 
         # create main tk frame
-        f = Frame(master, height=500, width=580)
+        f = Frame(master, height=500, width=580, bg="grey30")
         f.pack()
         f.pack_propagate(0)
 
         # create left frame
-        lf = Frame(f)
+        lf = Frame(f, bg="black")
 
         # create channel display
         self.chandisp = LXChannelDisplay(lf, self.cues.channels, 10)
 
         # create command field
-        self.e = Entry(lf)
+        self.e = Entry(lf, bg="wheat2")
         self.e.pack(fill=X, side=BOTTOM)
         self.e.bind("<Key>", self.key)
 
         lf.pack(side=LEFT)
 
         # create right frame
-        rf = Frame(f, height=500, width=250)
+        rf = Frame(f, height=500, width=250, bg="grey30")
         rf.pack(side=RIGHT)
         rf.pack_propagate(0)
 
         # create current cue label
-        self.cqt = Label(rf, anchor=W, width=20, padx=5, pady=5)
+        self.cqt = Label(rf, anchor=W, width=20, padx=5, pady=5, fg='white', bg='grey30')
         self.cqt.pack(fill=X, side=TOP)
 
         # create current cue up label
-        self.cqup = Label(rf, anchor=W, width=20, padx=5, pady=5)
+        self.cqup = Label(rf, anchor=W, width=20, padx=5, pady=5, fg='white', bg='grey30')
         self.cqup.pack(fill=X, side=TOP)
 
         # create current cue down label
-        self.cqdn = Label(rf, anchor=W, width=20, padx=5, pady=5)
+        self.cqdn = Label(rf, anchor=W, width=20, padx=5, pady=5, fg='white', bg='grey30')
         self.cqdn.pack(fill=X, side=TOP)
 
         # create current cue follow label
-        self.cqf = Label(rf, anchor=W, width=20, padx=5, pady=5)
+        self.cqf = Label(rf, anchor=W, width=20, padx=5, pady=5, fg='white', bg='grey30')
         self.cqf.pack(fill=X, side=TOP)
 
-        # create go button
+        # create go, stop, back buttons
         cf = Frame(rf)
-        self.gb = Button(cf, text="Go", width=10, command=self.go_cmd)
+        self.gb = Button(cf, text="Go", width=10, command=self.go_cmd, highlightbackground='grey30')
         self.gb.pack(side=BOTTOM)
-        self.sb = Button(cf, text="Stop", width=10, command=self.stop_cmd)
+        self.sb = Button(cf, text="Stop", width=10, command=self.stop_cmd, highlightbackground='grey30')
         self.sb.pack(side=BOTTOM)
-        self.sb = Button(cf, text="Back", width=10, command=self.back_cmd)
+        self.sb = Button(cf, text="Back", width=10, command=self.back_cmd, highlightbackground='grey30')
         self.sb.pack(side=BOTTOM)
-        cf.pack(side=LEFT)
+        cf.pack(side=LEFT,padx=10)
 
         # create next cue label and pack the gf frame
-        self.nx = Label(rf, width=5)
+        self.nx = Label(rf, width=5, bg='grey40')
         self.nx.pack(side=LEFT)
 
         # create master fader

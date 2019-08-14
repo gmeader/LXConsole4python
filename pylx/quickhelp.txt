@@ -76,6 +76,10 @@ File Menu:
 
 Live Menu:
   OSC toggles OSC input.
+
+Window Menu:
+  Cues shows a liet of the recorded cues. (same as cue ? command)
+  Patch shows the current patch. (same as patch ? command)
 	
 Application Options:
   Including the number of dimmer and channels, the target address

@@ -17,15 +17,15 @@ class LXCuesAsciiParser (USITTAsciiParser):
 		self.cues = LXCues(channels, dimmers)
 		#default is 1-1 patch, start blank
 		self.cues.clearPatch()
-		self.cues.livecue.output = interface;
-		
+		self.cues.livecue.output = interface
+
 	def gethex(self, hc):
 		ohc = ord(hc)
-		if ohc >= 48 and ohc <= 57:
+		if 48 <= ohc <= 57:
 			return ohc - 48
-		if ohc >= 65 and ohc <= 70:
+		if 65 <= ohc <= 70:
 			return ohc - 55
-		if ohc >= 97 and ohc <= 102:
+		if 97 <= ohc <= 102:
 			return ohc - 87
 		return 0
 		
